@@ -49,34 +49,39 @@ $space_used = $space_used;
 $total_space_avail = $total_space_avail;
 
 
-// CREATE PIE CHART FOR VISUAL
+// 1- make sure it has permission to save pie graph in directory
+// 2- make sure not to make pie charf if no file issue #5 (but display 0 anyways textually)
+if ($num_of_file > 0) {
+	// CREATE PIE CHART FOR VISUAL
 
-// $data = array($pleio_main_size,$subsites_size,$groups_size,$users_size);
-// $data = array($space_used, $total_space_avail);
-// // Create the Pie Graph. 
-// $graph = new PieGraph(350,250);
+	//$data = array($pleio_main_size,$subsites_size,$groups_size,$users_size);
+	$data = array($space_used, $total_space_avail);
+	// Create the Pie Graph. 
+	$graph = new PieGraph(350,250);
 
-// $theme_class="DefaultTheme";
-// //$graph->SetTheme(new $theme_class());
+	$theme_class="DefaultTheme";
+	//$graph->SetTheme(new $theme_class());
 
-// // Set A title for the plot
-// $graph->title->Set("Total Disk Space Usage");
-// $graph->SetBox(true);
+	// Set A title for the plot
+	$graph->title->Set("Total Disk Space Usage");
+	$graph->SetBox(true);
 
-// // Create
-// $p1 = new PiePlot($data);
-// $graph->Add($p1);
+	// Create
+	$p1 = new PiePlot($data);
+	$graph->Add($p1);
 
-// $p1->ShowBorder();
-// $p1->SetColor('black');
-// $p1->SetSliceColors(array('#800000','#339933'));
+	$p1->ShowBorder();
+	$p1->SetColor('black');
+	$p1->SetSliceColors(array('#800000','#339933'));
 
-// $fp = elgg_get_plugins_path()."c_dashboard_usage/img/pie_chart1.png";
-// $file = $graph->Stroke($fp);
-//echo '<img src="'.elgg_get_site_url().'mod/c_dashboard_usage/img/pie_chart1.png">';
+	$fp = elgg_get_plugins_path()."c_dashboard_usage/img/pie_chart1.png";
+	$file = $graph->Stroke($fp);
+	echo '<img src="'.elgg_get_site_url().'mod/c_dashboard_usage/img/pie_chart1.png">';
+} else {
+	echo 'This site has no files uploaded!<br/>';
+}
 
-
-echo 'Total Space Available: '.$total_space_avail.' bytes <br/> Total Disk Space Used: '.$space_used.' bytes <br/> Total Space Allocated: '.$total_space_allocated.' bytes <br/> Number of Files: '.$num_of_file;
+echo '<br/>Total Space Available: '.$total_space_avail.' bytes <br/> Total Disk Space Used: '.$space_used.' bytes <br/> Total Space Allocated: '.$total_space_allocated.' bytes <br/> Number of Files: '.$num_of_file;
 
 
 // get all site guid (since there are subsites)
