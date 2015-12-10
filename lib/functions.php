@@ -12,7 +12,7 @@ function c_dashboard_usage_get_quota($object) {
     } elseif ($object instanceof ElggUser) {
         return elgg_get_plugin_setting('user_quota', 'c_dashboard_usage');
     } else {
-        return 0;
+        return false;
     }
 }
 

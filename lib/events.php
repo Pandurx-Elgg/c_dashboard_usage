@@ -11,7 +11,7 @@ function c_dashboard_usage_create_object_event_handler($event, $object_type, $ob
     $usage = c_dashboard_usage_get_usage($container);
     $quota = c_dashboard_usage_get_quota($container);
 
-    if ($usage + $size  <= $quota) {
+    if (!$quota | $usage + $size  <= $quota) {
         $object->size = $size; // persist size in object as we are not able to retrieve it on delete event, the file is already gone when delete event is triggered.
         c_dashboard_usage_update_usage($container, $object->size);
         return true;
@@ -32,7 +32,7 @@ function c_dashboard_usage_update_object_event_handler($event, $object_type, $ob
     $quota = c_dashboard_usage_get_quota($container);
     $delta = filesize($object->getFilenameOnFilestore()) - $object->size;
 
-    if ($usage + $delta <= $quota) {
+    if (!$quota | $usage + $delta <= $quota) {
         c_dashboard_usage_update_usage($container, $delta);
         $object->size = filesize($object->getFilenameOnFilestore());
         return true;
