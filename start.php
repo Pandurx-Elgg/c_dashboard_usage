@@ -3,8 +3,10 @@
 
 require_once(dirname(__FILE__) . "/lib/functions.php");
 require_once(dirname(__FILE__) . "/lib/events.php");
+require_once(dirname(__FILE__) . "/lib/pages.php");
 
 elgg_register_event_handler('init', 'system', 'c_dashboard_usage_init');
+elgg_register_event_handler('pagesetup', 'system', 'c_dashboard_usage_pagesetup');
 
 function c_dashboard_usage_init() {
 	elgg_register_event_handler("create", "object", "c_dashboard_usage_create_object_event_handler");
@@ -24,4 +26,31 @@ function c_dashboard_usage_init() {
 	elgg_load_library('jgraph');
 	elgg_load_library('jgraph_pie');
 	elgg_load_library('jgraph_bar');
+
+	elgg_register_page_handler('groups', 'c_dashboard_usage_pagehandler');
+}
+
+function c_dashboard_usage_pagesetup() {
+	if (!elgg_in_context('group_profile')) {
+		return true;
+	}
+
+	$page_owner = elgg_get_page_owner_entity();
+	if ($page_owner instanceof ElggGroup && $page_owner->canEdit()) {
+		elgg_register_menu_item('title', array(
+			'name' => 'disk_usage',
+			'text' => elgg_echo('admin:administer_utilities:disk_space_usage'),
+			'class' => 'elgg-button elgg-button-action',
+			'href' => elgg_get_site_url() . "groups/disk-usage/{$page_owner->guid}"
+		));
+	}
+}
+
+function c_dashboard_usage_pagehandler($page) {
+	if ($page[0] == "disk-usage") {
+		c_dashboard_usage_group_page($page[1]);
+		return true;
+	}
+
+	return groups_page_handler($page);
 }
