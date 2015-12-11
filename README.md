@@ -1,4 +1,4 @@
-# c_dashboard_usage
+# Disk Space Usage
 Statistical Information for Pleio site (ElggFile specific)
 <br/>
 This package contains only the module for the Disk Space Usage (for ElggFile) and is compatible on both GCconnex and Pleio. <strong>See below for Requirements and Installation instructions</strong>.
